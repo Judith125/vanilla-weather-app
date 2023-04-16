@@ -9,6 +9,7 @@ body {
 
 .form-control {
   border: 1px solid #400082;
+  background: transparent;
 }
 
 .user-location {
