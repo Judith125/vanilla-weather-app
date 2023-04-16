@@ -98,7 +98,7 @@ function displayTemperature(response) {
   getForecast(response.data.coordinates);
 }
 
-function search(city) {
+function searchCity(city) {
   let apiKey = "68foa3b6c3287912245c90f34aa4t8d8";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 
@@ -108,7 +108,7 @@ function search(city) {
 function handleSubmit(event) {
   event.preventDefault();
   let cityInputElement = document.querySelector("#city-input");
-  search(cityInputElement.value);
+  searchCity(cityInputElement.value);
 }
 
 function displayFahrenheitTemperature(event) {
@@ -129,10 +129,24 @@ function displayCelsiusTemperature(event) {
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
 }
 
+function searchLocation(position) {
+  let apiKey = "68foa3b6c3287912245c90f34aa4t8d8";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${position.coords.longitude}&lat=${position.coords.latitude}&key=${apiKey}`;
+
+  axios.get(apiUrl).then(displayTemperature);
+}
+
+function getUserLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(searchLocation);
+}
 let celsiusTemperature = null;
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+let userLocationButton = document.querySelector("#user-location");
+userLocationButton.addEventListener("click", getUserLocation);
 
 let fahrenheitLink = document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
@@ -140,4 +154,4 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
-search("Amsterdam");
+searchCity("Amsterdam");
